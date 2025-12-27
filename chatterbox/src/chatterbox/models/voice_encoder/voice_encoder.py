@@ -237,6 +237,9 @@ class VoiceEncoder(nn.Module):
             mel_lens = [mel.shape[0] for mel in mels]
             mels = pack(mels)
 
+        if torch.is_tensor(mels):
+            mels = mels.float()
+
         # Embed them
         with torch.inference_mode():
             utt_embeds = self.inference(mels.to(self.device), mel_lens, batch_size=batch_size, **kwargs).numpy()
